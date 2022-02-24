@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+</head>
+<style>
+</style>
+
+<body>
+
+    <div class="container">
+        <h2>Centered Modal Example</h2>
+        <p>Center the modal vertically and horizontally within the page, with the .modal-dialog-centered class.</p>
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            Buy Item
+        </button>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Payment</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+
+                        <ul class="nav justify-content-center">
+                            <li class="nav-link">
+                                <img src="img/song (5).jpg" alt="" style="width: 180px; height: 180px;">
+                            </li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-12 text-center" style="font-size: 14px;">
+                                <label for="song">Balls to the Wall - <b>Gerald Moore</b></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center" style="font-size: 14px;">
+                                Price : <label for="price">0.99</label> USD
+                            </div>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer justify-content-center">
+                            <div id="paypal-button"></div>
+                            <!-- <img src="img/Capture.PNG" alt="Button paypal"> -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            paypal.Button.render({
+                // Configure environment
+                env: 'sandbox',
+                client: {
+                    sandbox: 'AQ8TynBacmeMTIqy5JMI7w0qyqWSWaQnBxJbIWNogmWnVFZo0DzQuKmTO8T5HfdloG9BwxB9oQ0QWHr2',
+                    production: ''
+                    // sb-24bis2741102@personal.example.com
+                    // sb-jhgh82729658@personal.example.com
+                },
+                // Customize button (optional)
+                locale: 'en_US',
+                style: {
+                    size: 'medium',
+                    color: 'gold',
+                    shape: 'rect',
+                },
+
+                // Enable Pay Now checkout flow (optional)
+                commit: true,
+
+                // Set up a payment
+                payment: function (data, actions) {
+                    return actions.payment.create({
+                        transactions: [{
+                            amount: {
+                                total: '100.00',
+                                currency: 'USD'
+                            }
+                        }]
+                    });
+                },
+                // Finalize the transaction
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        // Show a success message to the buyer
+                        alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                    });
+                }
+            }, '#paypal-button');
+        </script>
+</body>
+
+</html>
